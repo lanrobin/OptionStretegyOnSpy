@@ -32,5 +32,8 @@ namespace OptionBackTest
                 return _conf["Settings:StartDate"];
             }
         }
+
+        public double Miu { get { return double.Parse(_conf["Settings:Miu"]); } }
+        public double Delta { get { return double.Parse(_conf["Settings:Delta"]); } }
     }
 }

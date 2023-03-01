@@ -11,12 +11,13 @@ namespace OptionBackTest
         // how many δ's protection. usually 1.
         private const double NUM_OF_DELTA = 0;
 
-        private const double SELL_PUT_PERCENT = 1.0 + MIU - NUM_OF_DELTA * DELTA;
+        private double SELL_PUT_PERCENT;
 
         private ILogger<SellPutHoldTheStrikeBackTest> _logger;
         public SellPutHoldTheStrikeBackTest(ILogger<SellPutHoldTheStrikeBackTest> logger, Settings s) : base(s)
         {
             _logger = logger;
+            SELL_PUT_PERCENT = 1.0 + MIU - NUM_OF_DELTA * DELTA;
         }
 
 
@@ -24,7 +25,7 @@ namespace OptionBackTest
         {
             Dictionary<DateTime, double> result = new Dictionary<DateTime, double>();
 
-            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse("2009-12-31")).ToList();
+            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse(_settings.StartDate)).ToList();
 
             int contractCount = 0;
             double leftMoney = InitialMount;

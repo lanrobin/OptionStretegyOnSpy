@@ -19,7 +19,7 @@ namespace OptionBackTest
     /// </summary>
     public class LocalDataLoadingService : IDataLoadingService
     {
-        private string HistoryDataRootPath { get { return $"{_settings.DataRoot}/SPYOptions"; } }
+        private string HistoryDataRootPath { get { return $"{_settings.DataRoot}/{_settings.Symbol}Options"; } }
         private string NewDataRootPath
         {
             get

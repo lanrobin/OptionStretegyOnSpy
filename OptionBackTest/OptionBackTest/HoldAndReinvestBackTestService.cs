@@ -19,7 +19,7 @@ namespace OptionBackTest
         public override void Calculate(DataCollection dc)
         {
             Dictionary<DateTime, double> result = new Dictionary<DateTime, double>();
-            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse("2009-12-31")).ToList();
+            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse(_settings.StartDate)).ToList();
             int stockCount = -1;
             double leftMoney = 0;
             if (wv != null && wv.Count > 1) {

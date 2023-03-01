@@ -9,7 +9,12 @@ namespace OptionBackTest
                 {
                     services.AddHostedService<OptionBackTestWorker>();
                     services.AddSingleton<IDataLoadingService, LocalDataLoadingService>();
-                    services.AddSingleton<IBackTestService, ConverredCallBackTest>();
+                    services.AddTransient<BaseBackTestService, HoldAndReinvestBackTestService> ();
+                    services.AddTransient<BaseBackTestService, SellATMPutBackTestService>();
+                    services.AddTransient<BaseBackTestService, SellPutWithoutProtectionBackTest>();
+                    services.AddTransient<BaseBackTestService, SellPutWithoutProtectionBackTest>();
+                    services.AddTransient<BaseBackTestService, ConverredCallBackTest>();
+                    services.AddSingleton<IBackTestService, AggregatedBackTestService>();
                     services.AddSingleton<Settings>();
                 })
                 .Build();

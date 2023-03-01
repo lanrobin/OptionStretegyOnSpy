@@ -17,7 +17,7 @@ namespace OptionBackTest
         {
             Dictionary<DateTime, double> resultFloor = new Dictionary<DateTime, double>();
             Dictionary<DateTime, double> resultCeiling = new Dictionary<DateTime, double>();
-            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse("2009-12-31")).ToList();
+            var wv = dc.WeekVolatilities.Where(i => i.Key > DateTime.Parse(_settings.StartDate)).ToList();
             int floorContractCount = 0;
             int ceilingContractCount = 0;
             double floorLeftMoney = InitialMount;

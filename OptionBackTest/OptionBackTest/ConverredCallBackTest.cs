@@ -11,12 +11,13 @@ namespace OptionBackTest
         // how many δ's protection. usually 1.
         private const double NUM_OF_DELTA = 0;
 
-        private const double COVERRED_CALL_PERCENT = 1.0 + MIU + NUM_OF_DELTA * DELTA;
+        private double COVERRED_CALL_PERCENT;
 
         private ILogger<ConverredCallBackTest> _logger;
         public ConverredCallBackTest(ILogger<ConverredCallBackTest> logger, Settings s):base(s)
         {
             _logger = logger;
+            COVERRED_CALL_PERCENT = 1.0 + MIU + NUM_OF_DELTA * DELTA;
         }
         public override void Calculate(DataCollection dc)
         {
