@@ -7,7 +7,7 @@ import pandas as pd
 import Env
 import FileUtil
 
-def GetOneStockHistory(sym, autoAdjust = True):
+def GetOneStockHistory(sym, autoAdjust = False):
     date = pd.Timestamp.now()
     s = yf.Ticker(sym)
     dateStr = date.strftime("%Y-%m-%d")
