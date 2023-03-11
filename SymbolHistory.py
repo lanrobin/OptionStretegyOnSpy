@@ -8,22 +8,25 @@ import Env
 import FileUtil
 
 def GetOneStockHistory(sym, autoAdjust = False):
-    date = pd.Timestamp.now()
-    s = yf.Ticker(sym)
-    dateStr = date.strftime("%Y-%m-%d")
-    print("Begin to fetch history of " + sym)
-    data = s.history(interval="1d", start="1990-1-1", end=dateStr, auto_adjust=autoAdjust)
-    historyDir = Env.GetDataRoot() +"/history/"
-    FileUtil.EnsurePathExists(historyDir)
-    fileName = historyDir + sym +".csv"
-    if(not autoAdjust):
-        fileName = historyDir + sym +"_unadjusted.csv"
-    with open(fileName, "w") as f:
-        f.writelines("Date," + ",".join(map(str, data.columns))+ "\n")
-        for index, item in zip(data.index.date, data.values):
-            f.writelines(str(index) +",")
-            f.writelines(",".join(map(str, item))+ "\n")
-    print("Finished to fetch " + sym)
+    try:
+        date = pd.Timestamp.now()
+        s = yf.Ticker(sym)
+        dateStr = date.strftime("%Y-%m-%d")
+        print("Begin to fetch history of " + sym)
+        data = s.history(interval="1d", start="1990-1-1", end=dateStr, auto_adjust=autoAdjust)
+        historyDir = Env.GetDataRoot() +"/history/"
+        FileUtil.EnsurePathExists(historyDir)
+        fileName = historyDir + sym +".csv"
+        if(not autoAdjust):
+            fileName = historyDir + sym +"_unadjusted.csv"
+        with open(fileName, "w") as f:
+            f.writelines("Date," + ",".join(map(str, data.columns))+ "\n")
+            for index, item in zip(data.index.date, data.values):
+                f.writelines(str(index) +",")
+                f.writelines(",".join(map(str, item))+ "\n")
+        print("Finished to fetch " + sym)
+    except Exception as e:
+        print(f"Fectch {sym} got error: {e}")
 
 def main():
     with open(Env.GetDataRoot() +"/symbols.txt", encoding="utf-8") as s:
