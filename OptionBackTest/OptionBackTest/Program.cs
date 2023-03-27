@@ -11,9 +11,9 @@ namespace OptionBackTest
                     services.AddSingleton<IDataLoadingService, LocalDataLoadingService>();
                     services.AddTransient<BaseBackTestService, HoldAndReinvestBackTestService> ();
                     services.AddTransient<BaseBackTestService, SellATMPutBackTestService>();
+                    //services.AddTransient<BaseBackTestService, SellPutWithoutProtectionBackTest>();
                     services.AddTransient<BaseBackTestService, SellPutWithoutProtectionBackTest>();
-                    services.AddTransient<BaseBackTestService, SellPutWithoutProtectionBackTest>();
-                    services.AddTransient<BaseBackTestService, ConverredCallBackTest>();
+                    //services.AddTransient<BaseBackTestService, ConverredCallBackTest>();
                     services.AddSingleton<IBackTestService, AggregatedBackTestService>();
                     services.AddSingleton<Settings>();
                 })

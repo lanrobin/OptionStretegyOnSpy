@@ -42,7 +42,7 @@ def ReadVolatility(symbol):
 
 
 def main():
-    symbol = "SPY"
+    symbol = "TSLA"
     data = ReadVolatility(symbol)
     Distribution(symbol, data)
 

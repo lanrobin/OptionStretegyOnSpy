@@ -3,7 +3,7 @@ import math
 import Env
 import FileUtil
 
-SymbolName = "SPY"
+SymbolName = "TSLA"
 
 def GetWeeklyVolatility(filePath, excludeDivends = False, AdjustedData = True):
     result = []

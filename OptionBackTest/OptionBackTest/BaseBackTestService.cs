@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ namespace OptionBackTest
 
         protected void WriteToCVS(string fileName, Dictionary<DateTime, double> result)
         {
+            Directory.CreateDirectory(ResultRoot);
             File.WriteAllLines($"{ResultRoot}\\{_settings.Symbol}-{fileName}.csv", result.Select(x => $"{x.Key.ToString("yyyy-MM-dd")},{x.Value}").ToArray());
         }
     }

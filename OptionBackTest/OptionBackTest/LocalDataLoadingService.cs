@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.Serialization;
@@ -19,12 +20,12 @@ namespace OptionBackTest
     /// </summary>
     public class LocalDataLoadingService : IDataLoadingService
     {
-        private string HistoryDataRootPath { get { return $"{_settings.DataRoot}/{_settings.Symbol}Options"; } }
+        private string HistoryDataRootPath { get { return $"{_settings.DataRoot}/{_settings.Symbol}"; } }
         private string NewDataRootPath
         {
             get
             {
-                return $"{_settings.DataRoot}/SPY-QQQ/{_settings.Symbol}";
+                return $"{_settings.DataRoot}/new_data";
             }
         }
         private string StockPriceHistoryRootPath
@@ -119,6 +120,7 @@ namespace OptionBackTest
 #else
             if (!Initialized)
             {
+                ExtractZip(SYMBOL);
                 LoadHistoryData(SYMBOL);
                 LoadNewData(SYMBOL);
                 LoadWeeklyVolatility(SYMBOL);
@@ -229,12 +231,38 @@ namespace OptionBackTest
             _logger.LogInformation($"Finish to load historical data with time:{sw.Elapsed}");
         }
 
+        private void ExtractZip(string symbolName)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            _logger.LogInformation($"Begin to extract zip files.");
+            var folders = Directory.GetFiles(NewDataRootPath, "*.zip", SearchOption.TopDirectoryOnly);
+            //foreach (var f in folders)
+            Parallel.ForEach(folders, f =>
+            {
+                using (ZipArchive zip = ZipFile.Open(f, ZipArchiveMode.Read))
+                    foreach (ZipArchiveEntry entry in zip.Entries)
+                        if (entry.FullName.Contains(symbolName, StringComparison.OrdinalIgnoreCase)) {
+                            var fullname = $"{NewDataRootPath}/{entry.FullName}";
+                            var path = Path.GetDirectoryName(fullname);
+                            Directory.CreateDirectory(path);
+                            if (!File.Exists(fullname))
+                            {
+                                entry.ExtractToFile(fullname);
+                            }
+                        }
+
+            }
+            );
+            sw.Stop();
+            _logger.LogInformation($"Finish to extract zip with time:{sw.Elapsed}");
+        }
+
         private void LoadNewData(string symbolName)
         {
             Stopwatch sw = Stopwatch.StartNew();
             _logger.LogInformation($"Begin to load new data.");
             var dailyPrices = GetDailyClosePrice(symbolName);
-            var folders = Directory.GetDirectories(NewDataRootPath, "*", SearchOption.TopDirectoryOnly);
+            var folders = Directory.GetDirectories($"{NewDataRootPath}/{symbolName}", "*", SearchOption.TopDirectoryOnly);
             //foreach (var f in folders)
             Parallel.ForEach(folders, f =>
             {
