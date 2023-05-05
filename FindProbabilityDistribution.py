@@ -22,7 +22,7 @@ def Distribution(symbol, data):
     dataLength = len(cannonicalData)
     for k,v in possibilities.items():
         exp += k * v / dataLength
-    
+    print(f"symbol:{symbol}")
     print("μ:" + str(exp))
     print("max:" + str(max(cannonicalData)))
     print("min:" + str(min(cannonicalData)))
@@ -42,7 +42,7 @@ def ReadVolatility(symbol):
 
 
 def main():
-    symbol = "TSLA"
+    symbol = "IWM"
     data = ReadVolatility(symbol)
     Distribution(symbol, data)
 
